@@ -580,6 +580,8 @@ while running:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			running = False
+			pygame.quit()
+			sys.exit()
 
 	now = (pygame.time.get_ticks() - start_time)//1000
 	
@@ -642,14 +644,14 @@ while running:
 	for hit in hits:
 		
 		keystate = pygame.key.get_pressed()
-		if keystate[pygame.K_LEFT] and keystate[pygame.K_1]:
+		if keystate[pygame.K_LEFT] and keystate[pygame.K_p]:
 			stone.speedx = -10
-		if keystate[pygame.K_RIGHT] and keystate[pygame.K_1]:
+		if keystate[pygame.K_RIGHT] and keystate[pygame.K_p]:
 			stone.speedx = 10
 		
-		if keystate[pygame.K_UP] and keystate[pygame.K_1]:
+		if keystate[pygame.K_UP] and keystate[pygame.K_p]:
 			stone.speedy = -10
-		if keystate[pygame.K_DOWN] and keystate[pygame.K_1]:
+		if keystate[pygame.K_DOWN] and keystate[pygame.K_p]:
 			stone.speedy = 10
 		
 		
@@ -686,26 +688,30 @@ while running:
 	# Checar colisiones - borde1 - stone
 	hits = pygame.sprite.spritecollide(borde1, stone_list, False)
 	for hit in hits:
-		
-		stone.speedy = -stone.speedy
+		if stone.speedy < 0:
+			stone.rect.top = borde1.rect.bottom
+			stone.speedy = -stone.speedy
 		
 	# Checar colisiones - borde2 - stone
 	hits = pygame.sprite.spritecollide(borde2, stone_list, False)
 	for hit in hits:
-		
-		stone.speedy = -stone.speedy
+		if stone.speedy > 0:
+			stone.rect.bottom = borde2.rect.top
+			stone.speedy = -stone.speedy
 		
 	# Checar colisiones - borde3 - stone
 	hits = pygame.sprite.spritecollide(borde3, stone_list, False)
 	for hit in hits:
-		
-		stone.speedx = -stone.speedx
+		if stone.speedx < 0:
+			stone.rect.left = borde3.rect.right
+			stone.speedx = -stone.speedx
 
 	# Checar colisiones - borde4 - stone
 	hits = pygame.sprite.spritecollide(borde4, stone_list, False)
 	for hit in hits:
-		
-		stone.speedx = -stone.speedx
+		if stone.speedx > 0:
+			stone.rect.right = borde4.rect.left
+			stone.speedx = -stone.speedx
 		
 	screen.blit(background, [0, 0])
 
@@ -719,15 +725,19 @@ while running:
 
 	draw_hp_bar(screen, 120, 5, player1.hp)
 	draw_text2(screen, str(int(player1.hp)) + "/100", 10, 170, 6)
+	draw_hp_bar(screen, player1.rect.x, player1.rect.y - 10, player1.hp)
 
 	draw_hp_bar(screen, 415, 5, player2.hp)
 	draw_text2(screen, str(int(player2.hp))+ "/100", 10, 470, 6)
+	draw_hp_bar(screen, player2.rect.x, player2.rect.y - 10, player2.hp)
 
 	draw_hp_bar(screen, 715, 5, player3.hp)
 	draw_text2(screen, str(int(player3.hp))+ "/100", 10, 770, 6)
+	draw_hp_bar(screen, player3.rect.x, player3.rect.y - 10, player3.hp)
 
 	draw_hp_bar(screen, 1015, 5, player4.hp)
 	draw_text2(screen, str(int(player4.hp))+ "/100", 10, 1070, 6)
+	draw_hp_bar(screen, player4.rect.x, player4.rect.y - 10, player4.hp)
 	
 	#reloj
 	draw_text1(screen, str((((pygame.time.get_ticks() - start_time)//60000)+(60))%(60))+":" + str((((pygame.time.get_ticks() - start_time)//1000)+(60))%(60)), 30, 570, 50)

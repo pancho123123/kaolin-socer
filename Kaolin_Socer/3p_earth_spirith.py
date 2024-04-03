@@ -238,14 +238,14 @@ class Stone(pygame.sprite.Sprite):
 		if self.speedy < 0:
 			self.speedy += 0.09
 
-		if self.rect.right > WIDTH + 50:
-			self.speedx -= 8
-		if self.rect.left < 250:
-			self.speedx += 8
-		if self.rect.y < 30:
-			self.speedy += 8
-		if self.rect.y > 500:
-			self.speedy -= 8
+		#if self.rect.right > WIDTH + 50:
+		#	self.speedx -= 8
+		#if self.rect.left < 250:
+		#	self.speedx += 8
+		#if self.rect.y < 30:
+		#	self.speedy += 8
+		#if self.rect.y > 500:
+		#	self.speedy -= 8
 class Borde1(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -481,6 +481,8 @@ while running:
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			running = False
+			pygame.quit()
+			sys.exit()
 
 	now = (pygame.time.get_ticks() - start_time)//1000
 	
@@ -533,14 +535,14 @@ while running:
 	for hit in hits:
 		
 		keystate = pygame.key.get_pressed()
-		if keystate[pygame.K_LEFT] and keystate[pygame.K_1]:
+		if keystate[pygame.K_LEFT] and keystate[pygame.K_p]:
 			stone.speedx = -10
-		if keystate[pygame.K_RIGHT] and keystate[pygame.K_1]:
+		if keystate[pygame.K_RIGHT] and keystate[pygame.K_p]:
 			stone.speedx = 10
 		
-		if keystate[pygame.K_UP] and keystate[pygame.K_1]:
+		if keystate[pygame.K_UP] and keystate[pygame.K_p]:
 			stone.speedy = -10
-		if keystate[pygame.K_DOWN] and keystate[pygame.K_1]:
+		if keystate[pygame.K_DOWN] and keystate[pygame.K_p]:
 			stone.speedy = 10
 		
 	# Checar colisiones - player3 - stone
@@ -561,26 +563,30 @@ while running:
 	# Checar colisiones - borde1 - stone
 	hits = pygame.sprite.spritecollide(borde1, stone_list, False)
 	for hit in hits:
-		
-		stone.speedy = -stone.speedy
+		if stone.speedy < 0:
+			stone.rect.top = borde1.rect.bottom
+			stone.speedy = -stone.speedy
 		
 	# Checar colisiones - borde2 - stone
 	hits = pygame.sprite.spritecollide(borde2, stone_list, False)
 	for hit in hits:
-		
-		stone.speedy = -stone.speedy
+		if stone.speedy > 0:
+			stone.rect.bottom = borde2.rect.top
+			stone.speedy = -stone.speedy
 		
 	# Checar colisiones - borde3 - stone
 	hits = pygame.sprite.spritecollide(borde3, stone_list, False)
 	for hit in hits:
-		
-		stone.speedx = -stone.speedx
+		if stone.speedx < 0:
+			stone.rect.left = borde3.rect.right
+			stone.speedx = -stone.speedx
 
 	# Checar colisiones - borde4 - stone
 	hits = pygame.sprite.spritecollide(borde4, stone_list, False)
 	for hit in hits:
-		
-		stone.speedx = -stone.speedx
+		if stone.speedx > 0:
+			stone.rect.right = borde4.rect.left
+			stone.speedx = -stone.speedx
 		
 	screen.blit(background, [0, 0])
 
@@ -593,12 +599,15 @@ while running:
 	
 	draw_hp_bar(screen, 320, 5, player1.hp)
 	draw_text2(screen, str(int(player1.hp)) + "/100", 10, 370, 6)
+	draw_hp_bar(screen, player1.rect.x, player1.rect.y - 10, player1.hp)
 
 	draw_hp_bar(screen, 615, 5, player2.hp)
 	draw_text2(screen, str(int(player2.hp))+ "/100", 10, 970, 6)
+	draw_hp_bar(screen, player2.rect.x, player2.rect.y - 10, player2.hp)
 
 	draw_hp_bar(screen, 915, 5, player3.hp)
 	draw_text2(screen, str(int(player3.hp))+ "/100", 10, 970, 6)
+	draw_hp_bar(screen, player3.rect.x, player3.rect.y - 10, player3.hp)
 
 	#reloj
 	draw_text1(screen, str((((pygame.time.get_ticks() - start_time)//60000)+(60))%(60))+":" + str((((pygame.time.get_ticks() - start_time)//1000)+(60))%(60)), 30, 570, 50)
