@@ -31,7 +31,7 @@ def draw_text2(surface, text, size, x, y):
 	surface.blit(text_surface, text_rect)
 
 def draw_hp_bar(surface, x, y, percentage):
-	BAR_LENGHT = 100
+	BAR_LENGHT = 50
 	BAR_HEIGHT = 10
 	fill = (percentage / 100) * BAR_LENGHT
 	border = pygame.Rect(x, y, BAR_LENGHT, BAR_HEIGHT)
@@ -45,8 +45,8 @@ def draw_hp_bar2(surface, x, y, percentage):
 	fill = (percentage / 100) * BAR_LENGHT
 	border = pygame.Rect(x, y, BAR_LENGHT, BAR_HEIGHT)
 	fill = pygame.Rect(x, y, fill, BAR_HEIGHT)
-	pygame.draw.rect(surface, BROWN, fill)
-	pygame.draw.rect(surface, BROWN, border, 2)
+	pygame.draw.rect(surface, GREEN, fill)
+	pygame.draw.rect(surface, WHITE, border, 2)
 
 def draw_mana_bar(surface, x, y, percentage):
 	BAR_LENGHT = 100
@@ -261,7 +261,6 @@ class Stamp4(pygame.sprite.Sprite):
 		if player4.hp == 0:
 			self.kill()
 
-
 class Stone(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
@@ -272,6 +271,10 @@ class Stone(pygame.sprite.Sprite):
 		self.rect.centery = 266
 		self.speedx = 0
 		self.speedy = 0
+		self.counter1 = True
+		self.counter2 = True
+		self.counter3 = True
+		self.counter4 = True
 
 	def update(self):
 		self.rect.x += self.speedx
@@ -285,49 +288,22 @@ class Stone(pygame.sprite.Sprite):
 		if self.speedy < 0:
 			self.speedy += 0.09
 
-		if self.rect.right > WIDTH + 50:
-			self.speedx -= 8
+		if self.rect.right > WIDTH:
+			if self.counter1:
+				self.counter1 = False
+				self.speedx = -self.speedx
 		if self.rect.left < 250:
-			self.speedx += 8
-		if self.rect.y < 30:
-			self.speedy += 8
+			if self.counter2:
+				self.counter2 = False
+				self.speedx = -self.speedx
+		if self.rect.y < 60:
+			if self.counter3:
+				self.counter3 = False
+				self.speedy = -self.speedy
 		if self.rect.y > 500:
-			self.speedy -= 8
-class Borde1(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.transform.scale(pygame.image.load("img/borde.png").convert(),(1000,1))
-		self.image.set_colorkey(WHITE)
-		self.rect = self.image.get_rect()
-		self.rect.x = 290
-		self.rect.y = 80
-
-class Borde2(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.transform.scale(pygame.image.load("img/borde.png").convert(),(1000,1))
-		self.image.set_colorkey(WHITE)
-		self.rect = self.image.get_rect()
-		self.rect.x = 290
-		self.rect.y = 550
-
-class Borde3(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.transform.scale(pygame.image.load("img/borde.png").convert(),(1,800))
-		self.image.set_colorkey(WHITE)
-		self.rect = self.image.get_rect()
-		self.rect.x = 300
-		self.rect.y = 0
-
-class Borde4(pygame.sprite.Sprite):
-	def __init__(self):
-		super().__init__()
-		self.image = pygame.transform.scale(pygame.image.load("img/borde.png").convert(),(1,800))
-		self.image.set_colorkey(WHITE)
-		self.rect = self.image.get_rect()
-		self.rect.x = WIDTH
-		self.rect.y = 0
+			if self.counter4:
+				self.counter4 = False
+				self.speedy = -self.speedy
 
 def show_go_screen():
 	
@@ -430,148 +406,97 @@ running = True
 start = True
 while running:
 	if game_over1:
-
 		show_game_over_screenp1()
-		borde1 = Borde1()
-		borde2 = Borde2()
-		borde3 = Borde3()
-		borde4 = Borde4()
-		
 		screen.blit(background,(0,0))
 		game_over1 = False
-		
 		all_sprites = pygame.sprite.Group()
-		all_sprites.add(borde1, borde2, borde3, borde4)
 		stone_list = pygame.sprite.Group()
 		stamp1 = Stamp1()
 		stamp2 = Stamp2()
 		stamp3 = Stamp3()
 		stamp4 = Stamp4()
-		all_sprites.add(stamp1, stamp2, stamp3, stamp4)
 		player1 = Player1()
 		player2 = Player2()
 		player3 = Player3()
 		player4 = Player4()
-		all_sprites.add(player1, player2, player3, player4)
-		
 		stone = Stone()
-		all_sprites.add(stone)
+		all_sprites.add(stamp1, stamp2, stamp3, stamp4, player1, player2, player3, player4, stone)
 		stone_list.add(stone)
 		start_time = pygame.time.get_ticks()
 
 	if game_over2:
-
 		show_game_over_screenp2()
-		borde1 = Borde1()
-		borde2 = Borde2()
-		borde3 = Borde3()
-		borde4 = Borde4()
-		
 		screen.blit(background,(0,0))
 		game_over2 = False
 		all_sprites = pygame.sprite.Group()
-		all_sprites.add(borde1, borde2, borde3, borde4)
 		stone_list = pygame.sprite.Group()
 		stamp1 = Stamp1()
 		stamp2 = Stamp2()
 		stamp3 = Stamp3()
 		stamp4 = Stamp4()
-		all_sprites.add(stamp1, stamp2, stamp3, stamp4)
 		player1 = Player1()
 		player2 = Player2()
 		player3 = Player3()
 		player4 = Player4()
-		all_sprites.add(player1, player2, player3, player4)
-		
 		stone = Stone()
-		all_sprites.add(stone)
+		all_sprites.add(stamp1, stamp2, stamp3, stamp4, player1, player2, player3, player4, stone)
 		stone_list.add(stone)
 		start_time = pygame.time.get_ticks()
 
 	if game_over3:
-
 		show_game_over_screenp3()
-		borde1 = Borde1()
-		borde2 = Borde2()
-		borde3 = Borde3()
-		borde4 = Borde4()
-		
 		screen.blit(background,(0,0))
 		game_over3 = False
 		all_sprites = pygame.sprite.Group()
-		all_sprites.add(borde1, borde2, borde3, borde4)
 		stone_list = pygame.sprite.Group()
 		stamp1 = Stamp1()
 		stamp2 = Stamp2()
 		stamp3 = Stamp3()
 		stamp4 = Stamp4()
-		all_sprites.add(stamp1, stamp2, stamp3, stamp4)
 		player1 = Player1()
 		player2 = Player2()
 		player3 = Player3()
 		player4 = Player4()
-		all_sprites.add(player1, player2, player3, player4)
-		
 		stone = Stone()
-		all_sprites.add(stone)
+		all_sprites.add(stamp1, stamp2, stamp3, stamp4, player1, player2, player3, player4, stone)
 		stone_list.add(stone)
 		start_time = pygame.time.get_ticks()
 
 	if game_over4:
-
 		show_game_over_screenp4()
-		borde1 = Borde1()
-		borde2 = Borde2()
-		borde3 = Borde3()
-		borde4 = Borde4()
-		
 		screen.blit(background,(0,0))
 		game_over4 = False
 		all_sprites = pygame.sprite.Group()
-		all_sprites.add(borde1, borde2, borde3, borde4)
 		stone_list = pygame.sprite.Group()
 		stamp1 = Stamp1()
 		stamp2 = Stamp2()
 		stamp3 = Stamp3()
 		stamp4 = Stamp4()
-		all_sprites.add(stamp1, stamp2, stamp3, stamp4)
 		player1 = Player1()
 		player2 = Player2()
 		player3 = Player3()
 		player4 = Player4()
-		all_sprites.add(player1, player2, player3, player4)
-		
 		stone = Stone()
-		all_sprites.add(stone)
+		all_sprites.add(stamp1, stamp2, stamp3, stamp4, player1, player2, player3, player4, stone)
 		stone_list.add(stone)
 		start_time = pygame.time.get_ticks()
 
 	if start:
 		show_go_screen()
-		
 		start = False
-		borde1 = Borde1()
-		borde2 = Borde2()
-		borde3 = Borde3()
-		borde4 = Borde4()
-		
 		screen.blit(background,(0,0))
 		all_sprites = pygame.sprite.Group()
-		all_sprites.add(borde1, borde2, borde3, borde4)
 		stone_list = pygame.sprite.Group()
 		stamp1 = Stamp1()
 		stamp2 = Stamp2()
 		stamp3 = Stamp3()
 		stamp4 = Stamp4()
-		all_sprites.add(stamp1, stamp2, stamp3, stamp4)
 		player1 = Player1()
 		player2 = Player2()
 		player3 = Player3()
 		player4 = Player4()
-		all_sprites.add(player1, player2, player3, player4)
-				
 		stone = Stone()
-		all_sprites.add(stone)
+		all_sprites.add(stamp1, stamp2, stamp3, stamp4, player1, player2, player3, player4, stone)
 		stone_list.add(stone)
 		start_time = pygame.time.get_ticks()
 		
@@ -629,15 +554,20 @@ while running:
 		
 		keystate = pygame.key.get_pressed()
 		if keystate[pygame.K_a] and keystate[pygame.K_e]:
+			stone.counter2 = True
 			stone.speedx = -10
 		if keystate[pygame.K_d] and keystate[pygame.K_e]:
+			stone.counter1 = True
 			stone.speedx = 10
 		
 		if keystate[pygame.K_w] and keystate[pygame.K_e]:
+			stone.counter3 = True
+			stone.counter4 = True
 			stone.speedy = -10
 		if keystate[pygame.K_s] and keystate[pygame.K_e]:
+			stone.counter3 = True
+			stone.counter4 = True
 			stone.speedy = 10
-		
 		
 	# Checar colisiones - player2 - stone
 	hits = pygame.sprite.spritecollide(player2, stone_list, False)
@@ -645,15 +575,20 @@ while running:
 		
 		keystate = pygame.key.get_pressed()
 		if keystate[pygame.K_LEFT] and keystate[pygame.K_p]:
+			stone.counter2 = True
 			stone.speedx = -10
 		if keystate[pygame.K_RIGHT] and keystate[pygame.K_p]:
+			stone.counter1 = True
 			stone.speedx = 10
 		
 		if keystate[pygame.K_UP] and keystate[pygame.K_p]:
+			stone.counter3 = True
+			stone.counter4 = True
 			stone.speedy = -10
 		if keystate[pygame.K_DOWN] and keystate[pygame.K_p]:
+			stone.counter3 = True
+			stone.counter4 = True
 			stone.speedy = 10
-		
 		
 	# Checar colisiones - player3 - stone
 	hits = pygame.sprite.spritecollide(player3, stone_list, False)
@@ -661,13 +596,19 @@ while running:
 		
 		keystate = pygame.key.get_pressed()
 		if keystate[pygame.K_f] and keystate[pygame.K_y]:
+			stone.counter2 = True
 			stone.speedx = -10
 		if keystate[pygame.K_h] and keystate[pygame.K_y]:
+			stone.counter1 = True
 			stone.speedx = 10
 		
 		if keystate[pygame.K_t] and keystate[pygame.K_y]:
+			stone.counter3 = True
+			stone.counter4 = True
 			stone.speedy = -10
 		if keystate[pygame.K_g] and keystate[pygame.K_y]:
+			stone.counter3 = True
+			stone.counter4 = True
 			stone.speedy = 10
 		
 	# Checar colisiones - player4 - stone
@@ -676,42 +617,20 @@ while running:
 		
 		keystate = pygame.key.get_pressed()
 		if keystate[pygame.K_j] and keystate[pygame.K_o]:
+			stone.counter2 = True
 			stone.speedx = -10
 		if keystate[pygame.K_l] and keystate[pygame.K_o]:
+			stone.counter1 = True
 			stone.speedx = 10
 		
 		if keystate[pygame.K_i] and keystate[pygame.K_o]:
+			stone.counter3 = True
+			stone.counter4 = True
 			stone.speedy = -10
 		if keystate[pygame.K_k] and keystate[pygame.K_o]:
+			stone.counter3 = True
+			stone.counter4 = True
 			stone.speedy = 10
-
-	# Checar colisiones - borde1 - stone
-	hits = pygame.sprite.spritecollide(borde1, stone_list, False)
-	for hit in hits:
-		if stone.speedy < 0:
-			stone.rect.top = borde1.rect.bottom
-			stone.speedy = -stone.speedy
-		
-	# Checar colisiones - borde2 - stone
-	hits = pygame.sprite.spritecollide(borde2, stone_list, False)
-	for hit in hits:
-		if stone.speedy > 0:
-			stone.rect.bottom = borde2.rect.top
-			stone.speedy = -stone.speedy
-		
-	# Checar colisiones - borde3 - stone
-	hits = pygame.sprite.spritecollide(borde3, stone_list, False)
-	for hit in hits:
-		if stone.speedx < 0:
-			stone.rect.left = borde3.rect.right
-			stone.speedx = -stone.speedx
-
-	# Checar colisiones - borde4 - stone
-	hits = pygame.sprite.spritecollide(borde4, stone_list, False)
-	for hit in hits:
-		if stone.speedx > 0:
-			stone.rect.right = borde4.rect.left
-			stone.speedx = -stone.speedx
 		
 	screen.blit(background, [0, 0])
 
@@ -723,22 +642,22 @@ while running:
 	draw_text1(screen, "P3", 20, 700, 6)
 	draw_text1(screen, "P4", 20, 1000, 6)
 
-	draw_hp_bar(screen, 120, 5, player1.hp)
+	draw_hp_bar2(screen, 120, 5, player1.hp)
 	draw_text2(screen, str(int(player1.hp)) + "/100", 10, 170, 6)
 	if player1.hp > 0:
 		draw_hp_bar(screen, player1.rect.x, player1.rect.y - 10, player1.hp)
 
-	draw_hp_bar(screen, 415, 5, player2.hp)
+	draw_hp_bar2(screen, 415, 5, player2.hp)
 	draw_text2(screen, str(int(player2.hp))+ "/100", 10, 470, 6)
 	if player2.hp > 0:
 		draw_hp_bar(screen, player2.rect.x, player2.rect.y - 10, player2.hp)
 
-	draw_hp_bar(screen, 715, 5, player3.hp)
+	draw_hp_bar2(screen, 715, 5, player3.hp)
 	draw_text2(screen, str(int(player3.hp))+ "/100", 10, 770, 6)
 	if player3.hp > 0:
 		draw_hp_bar(screen, player3.rect.x, player3.rect.y - 10, player3.hp)
 
-	draw_hp_bar(screen, 1015, 5, player4.hp)
+	draw_hp_bar2(screen, 1015, 5, player4.hp)
 	draw_text2(screen, str(int(player4.hp))+ "/100", 10, 1070, 6)
 	if player4.hp > 0:
 		draw_hp_bar(screen, player4.rect.x, player4.rect.y - 10, player4.hp)
