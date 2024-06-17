@@ -241,23 +241,6 @@ class Stone(pygame.sprite.Sprite):
 		if self.speedy < 0:
 			self.speedy += 0.09
 
-		if self.rect.right > WIDTH:
-			if self.counter1:
-				self.counter1 = False
-				self.speedx = -self.speedx
-		if self.rect.left < 250:
-			if self.counter2:
-				self.counter2 = False
-				self.speedx = -self.speedx
-		if self.rect.y < 60:
-			if self.counter3:
-				self.counter3 = False
-				self.speedy = -self.speedy
-		if self.rect.y > 500:
-			if self.counter4:
-				self.counter4 = False
-				self.speedy = -self.speedy
-
 def show_go_screen():
 	
 	screen.fill(BLACK)
@@ -418,6 +401,19 @@ while running:
 
 	now = (pygame.time.get_ticks() - start_time)//1000
 	
+	if stone.rect.right > WIDTH:
+		if stone.speedx > 0 :
+			stone.speedx = -stone.speedx
+	if stone.rect.left < 250:
+		if stone.speedx < 0:
+			stone.speedx = -stone.speedx
+	if stone.rect.top < 60:
+		if stone.speedy < 0:
+			stone.speedy = -stone.speedy
+	if stone.rect.bottom > 550:
+		if stone .speedy > 0:
+			stone.speedy = -stone.speedy
+
 	if player1.hp <= 0 and player2.hp <= 0:
 		game_over3 = True
 	if player2.hp <= 0 and player3.hp <= 0:
