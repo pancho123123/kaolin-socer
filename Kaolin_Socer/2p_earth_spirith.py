@@ -141,7 +141,7 @@ class Stamp1(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
 		self.image = pygame.transform.scale(pygame.image.load("img/blue.png").convert(),(65,65))
-		self.image.set_colorkey(BLACK)
+		self.image.set_colorkey(WHITE)
 		self.rect = self.image.get_rect()
 		self.rect.x = 500
 		self.rect.y =  133
@@ -154,7 +154,7 @@ class Stamp2(pygame.sprite.Sprite):
 	def __init__(self):
 		super().__init__()
 		self.image = pygame.transform.scale(pygame.image.load("img/purple.png").convert(),(65,65))
-		self.image.set_colorkey(BLACK)
+		self.image.set_colorkey(WHITE)
 		self.rect = self.image.get_rect()
 		self.rect.x = 900
 		self.rect.y =  133
@@ -215,7 +215,6 @@ for img in stone_list:
 
 def show_game_over_screenp1():
 	screen.fill(BLACK)
-	#draw_text1(screen, "Qop", 65, WIDTH // 2, HEIGHT // 4)
 	draw_text1(screen, "Player 1 WINS", 20, WIDTH // 2, HEIGHT // 2)
 	draw_text1(screen, "Press Q", 20, WIDTH // 2, HEIGHT * 3/4)
 
@@ -232,7 +231,6 @@ def show_game_over_screenp1():
 
 def show_game_over_screenp2():
 	screen.fill(BLACK)
-	#draw_text1(screen, "Qop", 65, WIDTH // 2, HEIGHT // 4)
 	draw_text1(screen, "Player 2 WINS", 20, WIDTH // 2, HEIGHT // 2)
 	draw_text1(screen, "Press Q", 20, WIDTH // 2, HEIGHT * 3/4)
 
